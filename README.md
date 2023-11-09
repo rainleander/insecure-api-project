@@ -29,9 +29,65 @@ The API will be simple, mimicking a real-world application, and will include the
 - Docker Compose: To manage the multi-container setup.
 
 ## Deployment
-- TODO: docker-compose setup
-- TODO: full deployment instructions
+To implement and run the insecure API from the provided GitHub repository, follow these instructions:
 
-## Exploits
+### Step 1: Clone the GitHub Repository
+
+Open a terminal and run the following command to clone the repository:
+
+```bash
+git clone https://github.com/rainleander/insecure-api-project.git
+```
+
+Navigate to the cloned repository directory:
+
+```bash
+cd insecure-api-project
+```
+
+### Step 2: Build and Run with Docker Compose
+
+Ensure that Docker and Docker Compose are installed on your system. You can check by running `docker -v` and `docker-compose -v`. If they are not installed, please install them before proceeding.
+
+In the root directory of the cloned repository, start the application by running:
+
+```bash
+docker-compose up --build
+```
+
+This command builds the Docker image for the Flask application and starts it. The `--build` flag ensures that the image is built using the most up-to-date version of your application code.
+
+### Step 3: Interact with the API
+
+After running the `docker-compose up` command, your Flask application should be running and accessible at `http://localhost:5000`. Use `curl`, Postman, or any HTTP client to interact with the API.
+
+Here are some example `curl` commands to interact with the API:
+
+```bash
+# Login (This is insecure and for demonstration purposes)
+curl -X POST http://localhost:5000/login -H "Content-Type: application/json" -d '{"username":"admin", "password":"password"}'
+
+# Fetch user details (Potentially vulnerable to SQL injection)
+curl http://localhost:5000/users/1
+```
+
+### Step 4: Explore the Vulnerabilities
+
 - TODO: A set of scripts to automate attacks like SQL injection will be provided.
 - TODO: Instructions for manual exploitation will also be included.
+
+### Step 5: Shutdown and Cleanup
+
+When you are done exploring the API, you can stop and remove the Docker containers by running:
+
+```bash
+docker-compose down
+```
+
+This command stops the services and removes the containers. To remove the containers along with their associated volumes, run `docker-compose down -v`.
+
+**Security Warning**: Keep in mind that this API contains intentional vulnerabilities for educational purposes. Never deploy this API in a production environment or expose it to an untrusted network.
+
+### Step 6: Provide Feedback (Optional)
+
+If you have any suggestions or feedback on the project, consider opening an issue or a pull request in the GitHub repository to share your thoughts with the repository maintainer.
