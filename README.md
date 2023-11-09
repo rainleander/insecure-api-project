@@ -71,6 +71,8 @@ curl -X POST http://localhost:5001/login -H "Content-Type: application/json" -d 
 curl http://localhost:5001/users/1
 ```
 
+TODO: Resolve [curl: (52) Empty reply from server](https://github.com/rainleander/insecure-api-project/issues/1)
+
 ### Step 4: Explore the Vulnerabilities
 
 - TODO: A set of scripts to automate attacks like SQL injection will be provided.
