@@ -1,6 +1,6 @@
 # app.py - A deliberately insecure API for educational purposes.
 
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify
 import sqlite3
 import os
 
@@ -12,12 +12,27 @@ app.config['SECRET_KEY'] = 'supersecret'
 # Insecure Database Connection: No password, and using SQLite for simplicity
 DATABASE = 'data.db'
 
+def init_db():
+    with app.app_context():
+        db = get_db_connection()
+        # Insecure: Executing SQL commands from string can lead to SQL injection
+        db.executescript("""
+        DROP TABLE IF EXISTS users;
+        CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT);
+        INSERT INTO users (username, password) VALUES ('admin', 'password');
+        """)
+        db.commit()
+        db.close()
 
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
 
+@app.before_first_request
+def initialize_database():
+    if not os.path.exists(DATABASE):
+        init_db()
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -64,15 +79,4 @@ def create_user():
 
 # Insecure: Debug mode should never be enabled in production
 if __name__ == '__main__':
-    if not os.path.exists(DATABASE):
-        conn = sqlite3.connect(DATABASE)
-        # Insecure: Executing SQL commands from string can lead to SQL injection
-        conn.executescript("""
-        DROP TABLE IF EXISTS users;
-        CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT, password TEXT);
-        INSERT INTO users (username, password) VALUES ('admin', 'password');
-        """)
-        conn.commit()
-        conn.close()
-    
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5001)
