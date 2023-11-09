@@ -47,7 +47,7 @@ cd insecure-api-project
 
 ### Step 2: Build and Run with Docker Compose
 
-Ensure that Docker and Docker Compose are installed on your system. You can check by running `docker -v` and `docker-compose -v`. If they are not installed, please install them before proceeding.
+Ensure that [Docker and Docker Compose](https://docs.docker.com/get-docker/) are installed and running on your system. You can check by running `docker -v` and `docker-compose -v` to confirm installation. If they are not installed, please install them before proceeding. Run `docker ps` to confirm status.
 
 In the root directory of the cloned repository, start the application by running:
 
@@ -65,10 +65,10 @@ Here are some example `curl` commands to interact with the API:
 
 ```bash
 # Login (This is insecure and for demonstration purposes)
-curl -X POST http://localhost:5000/login -H "Content-Type: application/json" -d '{"username":"admin", "password":"password"}'
+curl -X POST http://localhost:5001/login -H "Content-Type: application/json" -d '{"username":"admin", "password":"password"}'
 
 # Fetch user details (Potentially vulnerable to SQL injection)
-curl http://localhost:5000/users/1
+curl http://localhost:5001/users/1
 ```
 
 ### Step 4: Explore the Vulnerabilities
