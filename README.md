@@ -65,7 +65,7 @@ Here are some example `curl` commands to interact with the API:
 
 ```bash
 # Login (This is insecure and for demonstration purposes)
-curl -X POST http://localhost:5001/login -H "Content-Type: application/json" -d '{"username":"admin", "password":"password"}'
+curl -H "Content-Type: application/json" -d '{"username":"admin", "password":"password"}' http://localhost:5001/login
 
 # Fetch user details (Potentially vulnerable to SQL injection)
 curl http://localhost:5001/users/1
