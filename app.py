@@ -12,6 +12,7 @@ app.config['SECRET_KEY'] = 'supersecret'
 # Insecure Database Connection: No password, and using SQLite for simplicity
 DATABASE = 'data.db'
 
+
 def init_db():
     with app.app_context():
         db = get_db_connection()
@@ -24,15 +25,23 @@ def init_db():
         db.commit()
         db.close()
 
+
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
 
+
 @app.before_first_request
 def initialize_database():
     if not os.path.exists(DATABASE):
         init_db()
+
+
+@app.route('/')
+def verify_up():
+    return "The app is up!"
+
 
 @app.route('/login', methods=['POST'])
 def login():
