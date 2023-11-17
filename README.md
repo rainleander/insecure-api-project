@@ -1,6 +1,6 @@
 # Insecure API Project
 ## Objective
-This project aims to create an intentionally vulnerable API for educational purposes. The API will demonstrate common security flaws identified by the OWASP Top Ten list, allowing users to learn about API vulnerabilities through hands-on experience.
+This project aims to create an intentionally vulnerable API for educational purposes. The API will demonstrate common security flaws identified by the [OWASP Top Ten](https://owasp.org/www-project-top-ten/) list, allowing users to learn about API vulnerabilities through hands-on experience.
 
 ## Scope
 The API will be simple, mimicking a real-world application, and will include the following:
@@ -9,17 +9,9 @@ The API will be simple, mimicking a real-world application, and will include the
 - User data retrieval and manipulation endpoint
 - Administrative functions endpoint
 
-## Security Flaws to Implement
-### Broken User Authentication
-- The API will use simple token-based authentication without expiration.
-- Tokens will be easily guessable or hard-coded strings.
-
+## Security Flaw to Implement
 ### Injection Flaws
 - The user data endpoint will be susceptible to SQL injection.
-
-### Security Misconfiguration
-- Default usernames and passwords will be used.
-- Misconfigured headers will leak information.
 
 ## Tools and Technologies
 - Language: Python 3.x
@@ -47,7 +39,7 @@ cd insecure-api-project
 
 ### Step 2: Build and Run with Docker Compose
 
-Ensure that [Docker and Docker Compose](https://docs.docker.com/get-docker/) are installed and running on your system. You can check by running `docker -v` and `docker-compose -v` to confirm installation. If they are not installed, please install them before proceeding. Run `docker ps` to confirm status.
+Please ensure that [Docker and Docker Compose](https://docs.docker.com/get-docker/) are installed and running on your system. You can check by running `docker -v` and `docker-compose -v` to confirm installation. If they are not installed, please install them before proceeding. Run `docker ps` to confirm status.
 
 In the root directory of the cloned repository, start the application by running:
 
