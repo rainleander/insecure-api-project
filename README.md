@@ -51,16 +51,16 @@ This command builds the Docker image for the Flask application and starts it. Th
 
 ### Step 3: Interact with the API
 
-After running the `docker-compose up` command, your Flask application should be running and accessible at `http://localhost:5001`. Use `curl`, Postman, or any HTTP client to interact with the API.
+After running the `docker-compose up` command, your Flask application should be running and accessible at `http://localhost:8080`. Use `curl`, Postman, or any HTTP client to interact with the API.
 
 Here are some example `curl` commands to interact with the API:
 
 ```bash
 # Login (This is insecure and for demonstration purposes)
-curl -H "Content-Type: application/json" -d '{"username":"admin", "password":"password"}' http://localhost:5001/login
+curl -H "Content-Type: application/json" -d '{"username":"admin", "password":"password"}' http://localhost:8080/login
 
 # Fetch user details (Potentially vulnerable to SQL injection)
-curl http://localhost:5001/users/1
+curl http://localhost:8080/users/1
 ```
 
 TODO: Resolve [curl: (52) Empty reply from server](https://github.com/rainleander/insecure-api-project/issues/1)
