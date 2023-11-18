@@ -56,14 +56,21 @@ After running the `docker-compose up` command, your Flask application should be 
 Here are some example `curl` commands to interact with the API:
 
 ```bash
-# Login (This is insecure and for demonstration purposes)
-curl -H "Content-Type: application/json" -d '{"username":"admin", "password":"password"}' http://0.0.0.0:8080/login
+# Test if the app is accessible
+curl http://127.0.0.1:8080/
+```
+This will return 'Hello, World!'; you can also test if the app is accessible by opening the URL http://0.0.0.0:8080/ in your browser.  
 
+```bash
 # Fetch user details (Potentially vulnerable to SQL injection)
 curl http://0.0.0.0:8080/users/1
 ```
-
-TODO: Resolve [curl: (52) Empty reply from server](https://github.com/rainleander/insecure-api-project/issues/1)
+This command will return the following output: 
+```
+{
+  "message": "User Data Retrieval Endpoint"
+}
+```
 
 ### Step 4: Explore the Vulnerabilities
 
