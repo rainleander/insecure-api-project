@@ -74,7 +74,7 @@ This command will return the following output:
 
 ### Step 4: Explore the Vulnerabilities
 
-- TODO: A set of scripts to automate attacks like SQL injection will be provided.
+- TODO: A set of scripts to automate attacks like SQL injection will be provided. [in progress](https://github.com/rainleander/insecure-api-project/issues/8)
 - TODO: Instructions for manual exploitation will also be included.
 
 ### Step 5: Shutdown and Cleanup
