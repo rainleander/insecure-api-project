@@ -122,7 +122,7 @@ Testing for SQL injection in an API typically involves sending malicious SQL pay
 
    ```bash
    # Test SQL injection on /users/<username> endpoint
-   curl -X POST http://0.0.0.0:8080/users/admin' OR '1'='1 -- -d ''
+curl -X POST "http://0.0.0.0:8080/users/admin'%20OR%20'1'='1" -d ''
    ```
 
    This payload attempts to inject a SQL condition that always evaluates to true (`' OR '1'='1`) and comments out the rest of the query with `--`.
