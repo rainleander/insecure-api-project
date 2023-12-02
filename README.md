@@ -77,7 +77,8 @@ This command will return the following output:
 Many scripts are available to [automate SQL injection attacks](https://letmegooglethat.com/?q=scripts+to+automate+SQL+injection+attacks); I chose [SQLmap](https://sqlmap.org/) because it is open-source, relatively intuitive, and allowed me to adjust parameters reasonably easily with a wizard feature that allowed me to test and iterate efficiently. 
 
 Once installed, `brew install sqlmap`, however, I was a bit upset with the results.
-
+Run SQLMap on the user endpoint with a risk and severity level. 
+`sqlmap -u "http://0.0.0.0:8080/users/admin" --data="username=admin" --method=POST --dbms=SQLite  --risk=3 --level=5`
 The script does several types of tests:
 
 ```
