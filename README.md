@@ -74,8 +74,60 @@ This command will return the following output:
 
 ### Step 4: Explore the Vulnerabilities
 
-- TODO: A set of scripts to automate attacks like SQL injection will be provided. [in progress](https://github.com/rainleander/insecure-api-project/issues/8)
-- TODO: Instructions for manual exploitation will also be included.
+Many scripts are available to [automate SQL injection attacks](https://letmegooglethat.com/?q=scripts+to+automate+SQL+injection+attacks); I chose [SQLmap](https://sqlmap.org/) because it is open-source, relatively intuitive, and allowed me to adjust parameters reasonably easily with a wizard feature that allowed me to test and iterate efficiently. 
+
+Once installed, `brew install sqlmap`, however, I was a bit upset with the results.
+Run SQLMap on the user endpoint with a risk and severity level. 
+`sqlmap -u "http://0.0.0.0:8080/users/admin" --data="username=admin" --method=POST --dbms=SQLite  --risk=3 --level=5`
+The script does several types of tests:
+
+```
+[15:19:30] [INFO] testing 'AND boolean-based blind - WHERE or HAVING clause'
+[15:19:30] [INFO] testing 'Boolean-based blind - Parameter replace (original value)'
+[15:19:30] [INFO] testing 'MySQL >= 5.1 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (EXTRACTVALUE)'
+[15:19:30] [INFO] testing 'PostgreSQL AND error-based - WHERE or HAVING clause'
+[15:19:30] [INFO] testing 'Microsoft SQL Server/Sybase AND error-based - WHERE or HAVING clause (IN)'
+[15:19:30] [INFO] testing 'Oracle AND error-based - WHERE or HAVING clause (XMLType)'
+[15:19:30] [INFO] testing 'Generic inline queries'
+[15:19:30] [INFO] testing 'PostgreSQL > 8.1 stacked queries (comment)'
+[15:19:30] [INFO] testing 'Microsoft SQL Server/Sybase stacked queries (comment)'
+[15:19:30] [INFO] testing 'Oracle stacked queries (DBMS_PIPE.RECEIVE_MESSAGE - comment)'
+[15:19:30] [INFO] testing 'MySQL >= 5.0.12 AND time-based blind (query SLEEP)'
+[15:19:30] [INFO] testing 'PostgreSQL > 8.1 AND time-based blind'
+[15:19:30] [INFO] testing 'Microsoft SQL Server/Sybase time-based blind (IF)'
+[15:19:30] [INFO] testing 'Oracle AND time-based blind'
+```
+
+But returned that `all tested parameters do not appear to be injectable`. There are a few possible reasons for that. 
+
+- **SQLMap's Testing Strategy**: SQLMap follows a set of predefined testing strategies and payloads to detect SQL injection vulnerabilities. It doesn't necessarily cover all possible variations of SQL injection and may not detect vulnerabilities if they deviate from its testing patterns.
+
+- **Test Parameters**: SQLMap relies on the parameters provided in the URL or form data for testing. If the parameters are not easily identifiable as injection points, SQLMap may not detect them as potential vulnerabilities.
+
+- **Custom Code**: SQLMap is a general-purpose tool that may not fully understand the specifics of the `app.py`. It might not recognize the SQL injection vulnerability in the Flask application because it's looking for more common patterns or vulnerabilities.
+
+- **Mitigation Measures**: In the original prompt `sqlmap -u "http://0.0.0.0:8080/users/admin" -v`, I am using SQLAlchemy and parameterized queries to mitigate SQL injection vulnerabilities. These measures are effective in preventing SQL injection attacks. SQLMap may not detect these vulnerabilities if it cannot find any exploitable SQL injection points.
+
+- **False Negatives**: False negatives (where SQLMap doesn't detect a vulnerability) can happen. SQLMap might require specific circumstances or payloads to trigger an injection, and if those conditions are not met during its automated testing, it may report no vulnerabilities.
+
+It's important to note that even if SQLMap doesn't detect a vulnerability, it doesn't necessarily mean the code is secure. Manual code review and thorough testing are essential for identifying and addressing potential security issues in your application. While parameterized queries and ORM libraries like SQLAlchemy help prevent SQL injection, other security considerations, such as input validation, authentication, and authorization, should also be part of a security strategy.
+
+Testing for SQL injection in an API typically involves sending malicious SQL payloads to the API endpoints and observing the responses to see if they reveal any indication of SQL injection vulnerabilities. You can use various tools and methods for this purpose. Here are some bash commands to test for SQL injection vulnerabilities in your Flask API:
+
+**Note:** This command is for educational purposes and should only be used on systems and applications you have permission to test.
+
+- **Curl with SQL Injection Payloads (Manual Testing)**:
+
+   Use `curl` to manually send requests with SQL injection payloads to the API endpoints. Replace `<username>` with a payload that may trigger SQL injection.
+
+   ```bash
+   # Test SQL injection on /users/<username> endpoint
+curl -X POST "http://0.0.0.0:8080/users/admin'%20OR%20'1'='1" -d ''
+   ```
+
+   This payload attempts to inject a SQL condition that always evaluates to true (`' OR '1'='1`) and comments out the rest of the query with `--`.
+
+Remember that testing for vulnerabilities should be done responsibly, and you should only test systems and applications for which you have explicit permission. Additionally, using these techniques for educational and security improvement purposes and not for malicious intent is essential.
 
 ### Step 5: Shutdown and Cleanup
 
@@ -87,7 +139,7 @@ docker-compose down
 
 This command stops the services and removes the containers. To remove the containers along with their associated volumes, run `docker-compose down -v`.
 
-**Security Warning**: Keep in mind that this API contains intentional vulnerabilities for educational purposes. Never deploy this API in a production environment or expose it to an untrusted network.
+**Security Warning**: So that you know, this API contains intentional vulnerabilities for educational purposes. Please don't deploy this API in a production environment or expose it to an untrusted network.
 
 ### Step 6: Provide Feedback (Optional)
 
