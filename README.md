@@ -39,7 +39,7 @@ cd insecure-api-project
 
 ### Step 2: Build and Run with Docker Compose
 
-Please ensure that [Docker and Docker Compose](https://docs.docker.com/get-docker/) are installed and running on your system. You can check by running `docker -v` and `docker-compose -v` to confirm installation. If they are not installed, please install them before proceeding. Run `docker ps` to confirm status.
+Please ensure that [Docker and Docker Compose](https://docs.docker.com/get-docker/) are installed and running on your system. You can check by running `docker -v` and `docker-compose -v` to confirm the installation. If they are not installed, please install them before proceeding. Run `docker ps` to confirm status.
 
 In the root directory of the cloned repository, start the application by running:
 
@@ -74,11 +74,10 @@ This command will return the following output:
 
 ### Step 4: Explore the Vulnerabilities
 
-Many scripts are available to [automate SQL injection attacks](https://letmegooglethat.com/?q=scripts+to+automate+SQL+injection+attacks); I chose [SQLmap](https://sqlmap.org/) because it is open-source, relatively intuitive, and allowed me to adjust parameters reasonably easily with a wizard feature that allowed me to test and iterate efficiently. 
+Run SQLMap on the user endpoint with a risk and severity level.
 
-Once installed, `brew install sqlmap`, however, I was a bit upset with the results.
-Run SQLMap on the user endpoint with a risk and severity level. 
 `sqlmap -u "http://0.0.0.0:8080/users/admin" --data="username=admin" --method=POST --dbms=SQLite  --risk=3 --level=5`
+
 The script does several types of tests:
 
 ```
@@ -98,7 +97,7 @@ The script does several types of tests:
 [15:19:30] [INFO] testing 'Oracle AND time-based blind'
 ```
 
-But returned that `all tested parameters do not appear to be injectable`. There are a few possible reasons for that. 
+This script returns that `all tested parameters do not appear to be injectable`. There are a few possible reasons for that. 
 
 - **SQLMap's Testing Strategy**: SQLMap follows a set of predefined testing strategies and payloads to detect SQL injection vulnerabilities. It doesn't necessarily cover all possible variations of SQL injection and may not detect vulnerabilities if they deviate from its testing patterns.
 
@@ -116,16 +115,16 @@ Testing for SQL injection in an API typically involves sending malicious SQL pay
 
 **Note:** This command is for educational purposes and should only be used on systems and applications you have permission to test.
 
-- **Curl with SQL Injection Payloads (Manual Testing)**:
+Curl with SQL Injection Payloads (Manual Testing)
 
-   Use `curl` to manually send requests with SQL injection payloads to the API endpoints. Replace `<username>` with a payload that may trigger SQL injection.
+Use `curl` to manually send requests with SQL injection payloads to the API endpoints. Replace `<username>` with a payload that may trigger SQL injection.
 
-   ```bash
-   # Test SQL injection on /users/<username> endpoint
-curl -X POST "http://0.0.0.0:8080/users/admin'%20OR%20'1'='1" -d ''
-   ```
+```bash
+# Test SQL injection on /users/<username> endpoint
+curl -X POST "http://0.0.0.0:8080/users/admin'%20OR%20'1'='1" -d
+```
 
-   This payload attempts to inject a SQL condition that always evaluates to true (`' OR '1'='1`) and comments out the rest of the query with `--`.
+This payload attempts to inject a SQL condition that continuously evaluates to true (`' OR '1'='1`) and comments out the rest of the query with `--`.
 
 Remember that testing for vulnerabilities should be done responsibly, and you should only test systems and applications for which you have explicit permission. Additionally, using these techniques for educational and security improvement purposes and not for malicious intent is essential.
 
